@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <title>Groupie Tracker</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1><a href="/" ><span class="neonText">🍬</span> Groupie Tracker <span class="neonText">🍬</span></a></h1>
+        <form method="get" action="/" id="searchForm">
+            <input type="search" name="search" id="search" placeholder="Search... 🔎" class="" autofocus/>
+            <datalist id="suggestions" class="hidden">
+                {{ range .ArtistsName }}
+                    <option value="{{.}}">
+                {{ end}}
+                
+            </datalist>
+            <input type="search" name="searchLocation" id="searchLocation" placeholder="Search Location... 🔎" class="hidden" autofocus/>
+            <datalist id="suggestionsLocations" class="hidden">
+                {{ range .LocationsAvailable }}
+                    <option value="{{.}}">
+                {{ end}}
+            </datalist>
+            <input type="search" id="creationDate" name="year" class="hidden" minlength="4">
+            <datalist id="suggestionsCreationDate" class="hidden">
+                {{ range .CreationDates }}
+                    <option value="{{.}}">
+                {{ end}}
+            </datalist>
+            <input type="date" name="date" id="date" class="hidden"/>
+            <select name="type" id="type" onchange="hiddenInputs(this.value)">
+                <option value="artist">🎤 Artist or Band</option>
+                <option value="date">📅 Dates</option>
+                <option value="firstAlbum">💿 Date of first album</option>
+                <option value="creationDate">🎵 Year of creation</option>
+                <option value="location">📍 Locations</option>
+            </select>
+            <div class="numberOfMembers">
+                <h4>Number of members :</h4>
+                <div class="checkboxes">
+                    {{ range .MaxMembers }}
+                    <div class="checkbox">
+                        <input type="checkbox" name="numberOfMember" value="{{.}}" id="number{{.}}">
+                        <label for="number{{.}}">{{.}}</label>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+            <div class="dateOfCreationInputs">
+                <h4>Range of creation date :</h4>
+                <div class="rangesDate">
+                    <div id="outputMinDate">{{if .MinDate}}{{.MinDate}}{{else}}{{.MinCreationDate}}{{end}}</div>
+                    <input type="range" name="minDate" min="{{.MinCreationDate}}" max="{{.MaxCreationDate}}" value="{{if .MinDate}}{{.MinDate}}{{else}}{{.MinCreationDate}}{{end}}" id="minDate"/>
+                    <input type="range" name="maxDate" min="{{.MinCreationDate}}" max="{{.MaxCreationDate}}" value="{{if .MaxDate}}{{.MaxDate}}{{else}}{{.MaxCreationDate}}{{end}}" id="maxDate"/>
+                    <div id="outputMaxDate">{{if .MaxDate}}{{.MaxDate}}{{else}}{{.MaxCreationDate}}{{end}}</div>
+                </div>
+            </div>
+            <div class="dateOfFirstAlbumInputs">
+                <h4>Range of first album :</h4>
+                <div class="rangesDate">
+                    <div id="outputMinDateFirstAlbum">{{if .MinDateFirstAlbum}}{{.MinDateFirstAlbum}}{{else}}{{.MinFirstAlbumDate}}{{end}}</div>
+                    <input type="range" name="minDateFirstAlbum" min="{{.MinFirstAlbumDate}}" max="{{.MaxFirstAlbumDate}}" value="{{if .MinDateFirstAlbum}}{{.MinDateFirstAlbum}}{{else}}{{.MinFirstAlbumDate}}{{end}}" id="minDateFirstAlbum"/>
+                    <input type="range" name="maxDateFirstAlbum" min="{{.MinFirstAlbumDate}}" max="{{.MaxFirstAlbumDate}}" value="{{if .MaxDateFirstAlbum}}{{.MaxDateFirstAlbum}}{{else}}{{.MaxFirstAlbumDate}}{{end}}" id="maxDateFirstAlbum"/>
+                    <div id="outputMaxDateFirstAlbum">{{if .MaxDateFirstAlbum}}{{.MaxDateFirstAlbum}}{{else}}{{.MaxFirstAlbumDate}}{{end}}</div>
+                </div>
+            </div>
+            <input type="submit" id="submitButton" value="Search">
+        </form>
+        <div class="list-artists">
+            {{if .ResultArtists}}
+            {{ range .ResultArtists}}
+                <div class="artist">
+                    <a href="/artist/{{.Id}}">
+                    <img src="{{.Image}}" alt="Cover"/>
+                    <h3>{{.Name}}</h3>
+                    </a>
+                </div>
+            {{ end }}
+            {{ else }}
+            <h2>No results found 😢</h2>
+            {{ end }}
+        </div>
+    </div>
+    <footer>
+        <span>Made by <a href="https://github.com/dylanBourcier" target="_blank">Dylan Bourcier,</a>
+        <a href="https://github.com/AlexandreJoly76" target="_blank">Alexandre Joly</a>
+          and <a href="https://github.com/Dahreau" target="_blank">Daro Samaky</a>.</span>
+        </footer>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css" rel="stylesheet" />
+    <script src="/static/scriptMap.js"></script>
+    <title>{{.Artist.Name}}</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1><a href="/"><span class="neonText">🍬</span> Groupie Tracker <span class="neonText">🍬</span></a></h1>
+        <div class="artistDetails">
+            <div class="artistCard">
+                <h2>🍓 {{.Artist.Name}} 🍓</h2>
+                <div class="artistContent">
+                    <img src="{{.Artist.Image}}" alt="Cover album" />
+                </div>
+                <div class="artistInfos">
+                    <h3>🍫 Members</h3>
+                    {{ range $member := .Artist.Members}}
+                    <ul>
+                        <li>{{$member}}</li>
+                    </ul>
+
+                    {{ end}}
+                    <h3>🍫 Creation Date : {{ .Artist.CreationDate }}</h3>
+                    <h3>🍫 First album : {{ .Artist.FirstAlbum }}</h3>
+
+
+                </div>
+            </div>
+            <div class="dateLocations">
+                {{ range $location, $dates := .Relations.DatesLocations}}
+                <div class="location">
+                    <h3>🍭 {{$location}}</h3>
+                    {{ range $date := $dates}}
+                    <h4>{{$date}}</h4>
+                    {{end}}
+                </div>
+                {{ end }}
+            </div>
+        </div>
+        <ul id="longitude" class="hidden">
+            {{ range .Coordinates }}
+                <li>
+                   {{ .Longitude}}
+                </li>
+            {{ end }}
+        </ul>
+        <ul id="latitude" class="hidden">
+            {{ range .Coordinates }}
+                <li>
+                   {{ .Latitude}}
+                </li>
+            {{ end }}
+        </ul>
+        <ul id="location" class="hidden">
+            {{ range .Coordinates }}
+                <li>
+                   {{ .Location}}
+                </li>
+            {{ end }}
+        </ul>
+        <div id="map"></div>
+    </div>
+    <footer><span>Made by <a href="https://github.com/dylanBourcier" target="_blank">Dylan Bourcier</a>, <a
+                href="https://github.com/AlexandreJoly76" target="_blank">Alexandre Joly</a> and <a
+                href="https://github.com/Dahreau" target="_blank">Daro Samaky</a>.</span></footer>
+</body>
+
+</html>
